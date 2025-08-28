@@ -260,7 +260,6 @@ export default function DigibyteWallet() {
   const [walletInfoDgb, setWalletInfoDgb] = React.useState<any>({});
   const [walletBalanceDgb, setWalletBalanceDgb] = React.useState<any>(null);
   const [isLoadingWalletBalanceDgb, setIsLoadingWalletBalanceDgb] = React.useState<boolean>(true);
-  const [allWalletAddressesDgb, setAllWalletAddressesDgb] = React.useState<any>([]);
   const [transactionsDgb, setTransactionsDgb] = React.useState<any>([]);
   const [isLoadingDgbTransactions, setIsLoadingDgbTransactions] = React.useState<boolean>(true);
   const [page, setPage] = React.useState(0);
@@ -429,24 +428,12 @@ export default function DigibyteWallet() {
   const getTransactionsDgb = async () => {
     try {
       setIsLoadingDgbTransactions(true);
-      const responseDgbAllAddresses = await qortalRequestWithTimeout({
-        action: "GET_USER_WALLET_INFO",
-        coin: "DGB",
-      }, 120000);
+      
       const responseDgbTransactions = await qortalRequestWithTimeout({
         action: "GET_USER_WALLET_TRANSACTIONS",
         coin: 'DGB'
       }, 300000);
-      try {
-        await responseDgbAllAddresses;
-        if (!responseDgbAllAddresses?.error) {
-          setAllWalletAddressesDgb(responseDgbAllAddresses);
-        }
-      } catch (error) {
-        setAllWalletAddressesDgb([]);
-        console.error("ERROR GET DGB ALL ADDRESSES", error);
-      }
-      await responseDgbTransactions;
+     
       if (!responseDgbTransactions?.error) {
         setTransactionsDgb(responseDgbTransactions);
         setIsLoadingDgbTransactions(false);

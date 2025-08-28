@@ -273,7 +273,6 @@ export default function BitcoinWallet() {
   const [walletInfoBtc, setWalletInfoBtc] = React.useState<any>({});
   const [walletBalanceBtc, setWalletBalanceBtc] = React.useState<any>(null);
   const [isLoadingWalletBalanceBtc, setIsLoadingWalletBalanceBtc] = React.useState<boolean>(true);
-  const [allWalletAddressesBtc, setAllWalletAddressesBtc] = React.useState<any>([]);
   const [transactionsBtc, setTransactionsBtc] = React.useState<any>([]);
   const [isLoadingBtcTransactions, setIsLoadingBtcTransactions] = React.useState<boolean>(true);
   const [page, setPage] = React.useState(0);
@@ -438,24 +437,12 @@ export default function BitcoinWallet() {
   const getTransactionsBtc = async () => {
     try {
       setIsLoadingBtcTransactions(true);
-      const responseBtcAllAddresses = await qortalRequestWithTimeout({
-        action: "GET_USER_WALLET_INFO",
-        coin: "BTC",
-      }, 120000);
+     
       const responseBtcTransactions = await qortalRequestWithTimeout({
         action: "GET_USER_WALLET_TRANSACTIONS",
         coin: 'BTC'
       }, 300000);
-      try {
-        await responseBtcAllAddresses;
-        if (!responseBtcAllAddresses?.error) {
-          setAllWalletAddressesBtc(responseBtcAllAddresses);
-        }
-      } catch (error) {
-        setAllWalletAddressesBtc([]);
-        console.error("ERROR GET BTC ALL ADDRESSES", error);
-      }
-      await responseBtcTransactions;
+
       if (!responseBtcTransactions?.error) {
         setTransactionsBtc(responseBtcTransactions);
         setIsLoadingBtcTransactions(false);

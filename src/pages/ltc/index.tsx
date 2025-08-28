@@ -262,7 +262,6 @@ export default function LitecoinWallet() {
   const [walletInfoLtc, setWalletInfoLtc] = React.useState<any>({});
   const [walletBalanceLtc, setWalletBalanceLtc] = React.useState<any>(null);
   const [isLoadingWalletBalanceLtc, setIsLoadingWalletBalanceLtc] = React.useState<boolean>(true);
-  const [allWalletAddressesLtc, setAllWalletAddressesLtc] = React.useState<any>([]);
   const [transactionsLtc, setTransactionsLtc] = React.useState<any>([]);
   const [isLoadingLtcTransactions, setIsLoadingLtcTransactions] = React.useState<boolean>(true);
   const [page, setPage] = React.useState(0);
@@ -431,24 +430,12 @@ export default function LitecoinWallet() {
   const getTransactionsLtc = async () => {
     try {
       setIsLoadingLtcTransactions(true);
-      const responseLtcAllAddresses = await qortalRequestWithTimeout({
-        action: "GET_USER_WALLET_INFO",
-        coin: "LTC",
-      }, 120000);
+
       const responseLtcTransactions = await qortalRequestWithTimeout({
         action: "GET_USER_WALLET_TRANSACTIONS",
         coin: 'LTC'
       }, 300000);
-      try {
-        await responseLtcAllAddresses;
-        if (!responseLtcAllAddresses?.error) {
-          setAllWalletAddressesLtc(responseLtcAllAddresses);
-        }
-      } catch (error) {
-        setAllWalletAddressesLtc([]);
-        console.error("ERROR GET LTC ALL ADDRESSES", error);
-      }
-      await responseLtcTransactions;
+     
       if (!responseLtcTransactions?.error) {
         setTransactionsLtc(responseLtcTransactions);
         setIsLoadingLtcTransactions(false);

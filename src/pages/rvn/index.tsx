@@ -260,7 +260,6 @@ export default function RavencoinWallet() {
   const [walletInfoRvn, setWalletInfoRvn] = React.useState<any>({});
   const [walletBalanceRvn, setWalletBalanceRvn] = React.useState<any>(null);
   const [isLoadingWalletBalanceRvn, setIsLoadingWalletBalanceRvn] = React.useState<boolean>(true);
-  const [allWalletAddressesRvn, setAllWalletAddressesRvn] = React.useState<any>([]);
   const [transactionsRvn, setTransactionsRvn] = React.useState<any>([]);
   const [isLoadingRvnTransactions, setIsLoadingRvnTransactions] = React.useState<boolean>(true);
   const [page, setPage] = React.useState(0);
@@ -428,24 +427,12 @@ export default function RavencoinWallet() {
   const getTransactionsRvn = async () => {
     try {
       setIsLoadingRvnTransactions(true);
-      const responseRvnAllAddresses = await qortalRequestWithTimeout({
-        action: "GET_USER_WALLET_INFO",
-        coin: "RVN",
-      }, 120000);
+      
       const responseRvnTransactions = await qortalRequestWithTimeout({
         action: "GET_USER_WALLET_TRANSACTIONS",
         coin: 'RVN'
       }, 300000);
-      try {
-        await responseRvnAllAddresses;
-        if (!responseRvnAllAddresses?.error) {
-          setAllWalletAddressesRvn(responseRvnAllAddresses);
-        }
-      } catch (error) {
-        setAllWalletAddressesRvn([]);
-        console.error("ERROR GET RVN ALL ADDRESSES", error);
-      }
-      await responseRvnTransactions;
+      
       if (!responseRvnTransactions?.error) {
         setTransactionsRvn(responseRvnTransactions);
         setIsLoadingRvnTransactions(false);

@@ -261,7 +261,6 @@ export default function DogecoinWallet() {
   const [walletInfoDoge, setWalletInfoDoge] = React.useState<any>({});
   const [walletBalanceDoge, setWalletBalanceDoge] = React.useState<any>(null);
   const [isLoadingWalletBalanceDoge, setIsLoadingWalletBalanceDoge] = React.useState<boolean>(true);
-  const [allWalletAddressesDoge, setAllWalletAddressesDoge] = React.useState<any>([]);
   const [transactionsDoge, setTransactionsDoge] = React.useState<any>([]);
   const [isLoadingDogeTransactions, setIsLoadingDogeTransactions] = React.useState<boolean>(true);
   const [page, setPage] = React.useState(0);
@@ -430,24 +429,12 @@ export default function DogecoinWallet() {
   const getTransactionsDoge = async () => {
     try {
       setIsLoadingDogeTransactions(true);
-      const responseDogeAllAddresses = await qortalRequestWithTimeout({
-        action: "GET_USER_WALLET_INFO",
-        coin: "DOGE",
-      }, 120000);
+     
       const responseDogeTransactions = await qortalRequestWithTimeout({
         action: "GET_USER_WALLET_TRANSACTIONS",
         coin: 'DOGE'
       }, 300000);
-      try {
-        await responseDogeAllAddresses;
-        if (!responseDogeAllAddresses?.error) {
-          setAllWalletAddressesDoge(responseDogeAllAddresses);
-        }
-      } catch (error) {
-        setAllWalletAddressesDoge([]);
-        console.error("ERROR GET DOGE ALL ADDRESSES", error);
-      }
-      await responseDogeTransactions;
+      
       if (!responseDogeTransactions?.error) {
         setTransactionsDoge(responseDogeTransactions);
         setIsLoadingDogeTransactions(false);
